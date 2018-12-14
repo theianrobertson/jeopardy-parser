@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="text-center">Jop!</h1>
+<div class="container-fluid">
+{% for cat in categories %}
+  <div class="row">
+  <button
+      type="button"
+      class="btn btn-primary btn-block"
+      style="margin-bottom:2px; height:6%; font-size:120%;"
+      onClick="location.href = '/category/{{cat.category_id}}';">{{cat.category}} ({{cat.cnt}} clues)</button>
+  </div>
+{% endfor %}
+</div>
+{% endblock %}

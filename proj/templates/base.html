@@ -1,0 +1,35 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <title>{% block page_title %}Jop!{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+  <!-- <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}"> -->
+  {% block css %}{% endblock %}
+  {% block js %}{% endblock %}
+
+</head>
+<body class="box">
+
+<!-- <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav">
+      <li><a href="/">Ian Robertson</a></li>
+      <li><a href="/aboutme/">About Me</a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="https://github.com/theianrobertson"><img src="{{ url_for('static', filename='github.svg') }}" alt="github" height="24" width="24"></a></li>
+      <li><a href="https://www.linkedin.com/in/ianrobertson85/"><img src="{{ url_for('static', filename='linkedin.svg') }}" alt="linkedin" height="24" width="24"></a></li>
+      <li><a href="https://www.instagram.com/theianrobertson/"><img src="{{ url_for('static', filename='instagram.svg') }}" alt="instagram" height="24" width="24"></a></li>
+    </ul>
+  </div>
+</nav> -->
+
+
+<div class="container-fluid" role="main">
+    {% block content %}{% endblock %}
+</div>
+
+</div>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

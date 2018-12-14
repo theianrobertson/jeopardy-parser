@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block js %}
+<script>
+var clues = {{ clues|tojson }};
+var currentClue;
+for (var i = 0; i < clues.length; i++) {
+    clues[i]["status"] = "unanswered";
+};
+
+function clueClick(buttonID) {
+  currentClue = parseInt(buttonID.substring(12));
+  document.getElementById("guess-button").innerHTML = clues[currentClue]["clue"];
+  showHideButtons("clue-button");
+  showHideButtons("guess-button");
+}
+
+function answerClick(buttonID) {
+  if(buttonID === "answer-correct") {
+    clues[currentClue]["status"] = "correct";
+  } else {
+    clues[currentClue]["status"] = "incorrect";
+  }
+  updateButtons();
+  document.getElementById("answer").innerHTML = "";
+  showHideButtons("clue-button");
+  showHideButtons("answer-button");
+}
+
+function guessClick() {
+  var guessButton = document.getElementById("guess-button");
+  document.getElementById("answer").innerHTML = clues[currentClue]["answer"];
+  showHideButtons("answer-button");
+  showHideButtons("guess-button");
+}
+
+function updateButtons() {
+  for (var i = 0; i < clues.length; i++) {
+    button = document.getElementById("clue-button-" + i);
+    if(clues[i]["status"] === "correct") {
+      button.disabled = true;
+      button.classList.remove("btn-primary");
+      button.classList.add("btn-success");
+    } else if(clues[i]["status"] === "incorrect") {
+      button.disabled = true;
+      button.classList.remove("btn-primary");
+      button.classList.add("btn-danger");
+    }
+  }
+}
+
+function showHideButtons(className) {
+  var buttons = document.getElementsByClassName(className);
+  for (var i = 0; i < buttons.length; i++) {
+    if (buttons[i].style.display === 'none') {
+        buttons[i].style.display = 'inline-block';
+    } else {
+        buttons[i].style.display = 'none';
+    }
+  }
+}
+
+</script>
+{% endblock %}
+{% block content %}
+<h3 class="text-center">{{clues[0].category}}</h3>
+<p class="text-center">{{clues[0].airdate}}, round {{clues[0].round}}</p>
+
+<div class="container-fluid">
+{% for clue in clues %}
+<div class="row">
+<button
+    type="button"
+    class="btn btn-primary clue-button btn-block"
+    id="clue-button-{{loop.index0}}"
+    style="margin-bottom:4px; word-wrap:break-word; height:15%; font-size:300%;"
+    onClick="clueClick(this.id)">${{clue.value}}</button>
+</div>
+{% endfor %}
+<div class="row">
+<button
+    type="button"
+    class="btn btn-warning guess-button btn-block"
+    id="guess-button"
+    style="display:none; margin-bottom:4px; white-space:normal; height:80%; font-size:300%;"
+    onClick="guessClick()">Show the answer!</button>
+<p
+    id="answer"
+    class="text-center"
+    style="font-size:400%; height:50%;"></p>
+</div>
+<div class="row">
+<button
+    type="button"
+    class="btn btn-success answer-button btn-block"
+    id="answer-correct"
+    style="display:none; height:20%; font-size:300%;"
+    onClick="answerClick(this.id)">I got it!</button>
+<button
+    type="button"
+    class="btn btn-danger answer-button btn-block"
+    id="answer-incorrect"
+    style="display:none; height:20%; font-size:300%;"
+    onClick="answerClick(this.id)">I blew it!</button>
+</div>
+</div>
+<!-- <table>
+  <tr>
+    <th>Round</th>
+    <th>Value</th>
+    <th>Clue</th>
+    <th>Answer</th>
+  </tr>
+{% for clue in clues %}
+<tr>
+    <td>{{clue.round}}</td>
+    <td>{{clue.value}}</td>
+    <td>{{clue.clue}}</td>
+    <td>{{clue.answer}}</td>
+</tr>
+{% endfor %}
+</table> -->
+{% endblock %}
